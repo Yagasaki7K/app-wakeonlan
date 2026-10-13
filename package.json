@@ -8,7 +8,7 @@
         "build:web": "vite build",
         "build": "vite build && nitron build",
         "relay": "bun relay/server.mjs",
-        "commit": "git pull && bun update && bun getSecurity.ts && bun run build:web && read -p 'Descriptions\n Commit: ' message && git add . && echo -n \"$message - \" && node getTime.js | xargs -I {} git commit -m \"$message - {}\" && git push"
+        "commit": "git pull && bun update && bun getSecurity.ts && bun run build && read -p 'Descriptions\n Commit: ' message && git add . && echo -n \"$message - \" && node getTime.js | xargs -I {} git commit -m \"$message - {}\" && git push"
     },
     "dependencies": {
         "react": "^18.3.1",
