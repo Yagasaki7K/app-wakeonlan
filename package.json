@@ -1,25 +1,26 @@
 {
-  "name": "network-waker",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build:web": "vite build",
-    "build": "vite build && nitron build",
-    "relay": "bun relay/server.mjs"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "styled-components": "^6.1.13"
-  },
-  "devDependencies": {
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.3",
-    "nitron": "^3.0.0",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.10"
-  }
+    "name": "network-waker",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite --host 0.0.0.0",
+        "build:web": "vite build",
+        "build": "vite build && nitron build",
+        "relay": "bun relay/server.mjs",
+        "commit": "git pull && bun update && bun getSecurity.ts && bun run build:web && read -p 'Descriptions\n Commit: ' message && git add . && echo -n \"$message - \" && node getTime.js | xargs -I {} git commit -m \"$message - {}\" && git push"
+    },
+    "dependencies": {
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "styled-components": "^6.6.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.3.31",
+        "@types/react-dom": "^18.3.7",
+        "@vitejs/plugin-react": "^4.7.0",
+        "nitron": "^3.1.0",
+        "typescript": "^5.9.3",
+        "vite": "^5.4.21"
+    }
 }
