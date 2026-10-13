@@ -195,6 +195,6 @@ server.listen(PORT, "0.0.0.0", () => {
     const cidrs = networks()
         .map((net) => net.address + "/" + net.prefix)
         .join(", ");
-    console.log("Network Waker relay listening on port " + PORT + (cidrs ? " · interfaces: " + cidrs : ""));
+    console.log("WakeOnLan relay listening on port " + PORT + (cidrs ? " · interfaces: " + cidrs : ""));
     console.log("Set SCAN_CIDR=192.168.1.0/24 to scan a specific LAN.");
 });

@@ -100,11 +100,18 @@ const Page = styled.main`
     .modal { margin:auto 0 }
   }
 `
-const base = localStorage.getItem('network-waker-relay') || 'http://localhost:8787'
+function getPreference(key: string, legacyKey: string) {
+  const current = localStorage.getItem(key)
+  if (current !== null) return current
+  const legacy = localStorage.getItem(legacyKey)
+  if (legacy !== null) localStorage.setItem(key, legacy)
+  return legacy
+}
+const base = getPreference('wakeonlan-relay', 'network-waker-relay') || 'http://localhost:8787'
 const label = (d: Device) => d.name || d.vendor || 'Unknown device'
 export function HomeDetails() {
   const [relay, setRelay] = useState(base), [draft, setDraft] = useState(base)
-  const [devices, setDevices] = useState<Device[]>([]), [favorites, setFavorites] = useState<string[]>(() => JSON.parse(localStorage.getItem('network-waker-favorites') || '[]'))
+  const [devices, setDevices] = useState<Device[]>([]), [favorites, setFavorites] = useState<string[]>(() => JSON.parse(getPreference('wakeonlan-favorites', 'network-waker-favorites') || '[]'))
   const [loading, setLoading] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('')
   const [query, setQuery] = useState(''), [selected, setSelected] = useState<Device | null>(null), [edit, setEdit] = useState(false), [last, setLast] = useState('')
   const scan = useCallback(async () => {
@@ -113,16 +120,16 @@ export function HomeDetails() {
     catch (e) { setError(e instanceof Error ? e.message : 'Could not reach the relay.') } finally { setLoading(false) }
   }, [relay])
   useEffect(() => { void scan() }, [scan])
-  useEffect(() => { localStorage.setItem('network-waker-favorites', JSON.stringify(favorites)) }, [favorites])
+  useEffect(() => { localStorage.setItem('wakeonlan-favorites', JSON.stringify(favorites)) }, [favorites])
   const visible = useMemo(() => devices.filter(d => [label(d),d.ip,d.mac,d.vendor||''].join(' ').toLowerCase().includes(query.toLowerCase())).sort((a,b) => Number(favorites.includes(b.mac.toLowerCase()))-Number(favorites.includes(a.mac.toLowerCase())) || Number(b.online)-Number(a.online) || a.ip.localeCompare(b.ip,undefined,{numeric:true})), [devices,favorites,query])
   const fav = (d: Device) => favorites.includes(d.mac.toLowerCase())
   const toggle = (d: Device) => setFavorites(old => fav(d) ? old.filter(x => x !== d.mac.toLowerCase()) : [...old,d.mac.toLowerCase()])
   async function wake(d: Device) { try { const res = await fetch(relay.replace(/\/$/,'')+'/api/wake',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mac:d.mac}),signal:AbortSignal.timeout(10000)}); const data=await res.json(); if(!res.ok) throw Error(data.error||'Wake request failed'); setNotice('Wake packet sent to '+label(d)+'.'); setSelected(null) } catch(e) { setNotice(e instanceof Error?e.message:'Could not send wake packet.') } }
   async function copy(d: Device) { const text=label(d)+'\nIP: '+d.ip+'\nMAC: '+d.mac; try { await navigator.clipboard.writeText(text); setNotice('Device details copied.') } catch { setNotice(text) } }
-  function saveRelay() { const url=draft.trim().replace(/\/$/,''); if(!/^https?:\/\//i.test(url)){setError('Relay URL must start with http:// or https://.');return} localStorage.setItem('network-waker-relay',url);setRelay(url);setDraft(url);setEdit(false) }
+  function saveRelay() { const url=draft.trim().replace(/\/$/,''); if(!/^https?:\/\//i.test(url)){setError('Relay URL must start with http:// or https://.');return} localStorage.setItem('wakeonlan-relay',url);setRelay(url);setDraft(url);setEdit(false) }
   const online=devices.filter(d=>d.online).length
   return <><Global/><Page><div className="wrap">
-    <header><div className="brand"><div className="logo">⌁</div><div><h1>Network Waker</h1><div className="sub">Local network · Wake-on-LAN</div></div></div><div className="relaystatus"><i className="dot"/> Local network relay</div></header>
+    <header><div className="brand"><div className="logo">⌁</div><div><h1>WakeOnLan</h1><div className="sub">Local network · Wake-on-LAN</div></div></div><div className="relaystatus"><i className="dot"/> Local network relay</div></header>
     <section className="intro"><div><h2>Your network, at a glance.</h2><p className="desc">Find devices on your network and wake them with one tap.</p></div><button className="primary" onClick={()=>void scan()} disabled={loading}>{loading?'◌ Scanning…':'↻  Scan network'}</button></section>
     <div className="stats"><div className="stat"><div className="value">{devices.length}</div><div className="label">Devices found</div></div><div className="stat"><div className="value" style={{color:'#bef264'}}>{online}</div><div className="label">Online now</div></div><div className="stat"><div className="value" style={{color:'#facc15'}}>{favorites.length}</div><div className="label">Favorites</div></div></div>
     {error&&<div className="notice error"><b>Couldn’t reach relay.</b> {error} Configure its LAN address below.</div>}{notice&&<div className="notice success">{notice}</div>}

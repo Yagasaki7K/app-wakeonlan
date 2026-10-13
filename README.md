@@ -1,4 +1,4 @@
-# Network Waker
+# WakeOnLan
 
 A responsive React app that discovers devices through a local network relay and sends Wake-on-LAN packets. The browser and Android WebView cannot read ARP neighbors or send UDP broadcasts themselves, so the relay must run on a computer or always-on device connected to the same LAN.
 
@@ -6,6 +6,7 @@ A responsive React app that discovers devices through a local network relay and 
 
 - [Abrir o aplicativo](https://ygskwan.vercel.app)
 - [Baixar o APK](dist/app.apk) — arquivo gerado com `bun run build`.
+- [LAN setup guide](HOW-TO-START.md) — configure o relay e o endereço LAN.
 
 ## Requirements
 

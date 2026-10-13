@@ -1,5 +1,5 @@
 {
-    "name": "network-waker",
+    "name": "wakeonlan",
     "private": true,
     "version": "1.0.0",
     "type": "module",
