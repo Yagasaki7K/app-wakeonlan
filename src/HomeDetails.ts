@@ -6,8 +6,8 @@ const Global = createGlobalStyle`
   button, input { font: inherit } ::selection { background: #a3e635; color: #18181b }
 `
 const Page = styled.main`
-  min-height: 100vh; padding: 30px 22px 54px; background: radial-gradient(ellipse at 50% -15%, #a3e63512, transparent 42%), #09090b;
-  .wrap { max-width: 920px; margin: auto }
+  min-height: 100vh; padding: clamp(18px, 3vw, 36px) clamp(12px, 3vw, 32px) 54px; background: radial-gradient(ellipse at 50% -15%, #a3e63512, transparent 42%), #09090b;
+  .wrap { width: 100%; max-width: 1080px; margin: auto }
   header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #27272a; padding-bottom: 22px }
   .brand { display: flex; align-items: center; gap: 12px } .logo { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: #a3e635; color: #18181b; font-size: 23px; font-weight: 800 }
   h1 { margin: 0; font-size: 16px } .sub { margin-top: 4px; color: #71717a; font-size: 12px } .relaystatus { color: #a1a1aa; font-size: 12px }
@@ -27,7 +27,78 @@ const Page = styled.main`
   .panel { margin-top: 18px; border: 1px solid #27272a; border-radius: 11px; background: #111113; padding: 14px } .panelhead { display: flex; justify-content: space-between; align-items: center } .hint { margin-top: 7px; color: #71717a; font-size: 11px; line-height: 1.5 } .edit { display: flex; gap: 8px; margin-top: 12px } .edit input { min-width: 0; font-size: 12px }
   footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 26px; padding-top: 14px; border-top: 1px solid #27272a; color: #52525b; font-size: 11px } footer button { border: 0; padding: 0; background: none; color: #a1a1aa }
   .shade { position: fixed; z-index: 4; inset: 0; display: grid; place-items: center; padding: 18px; background: #0009; backdrop-filter: blur(6px) } .modal { width: min(100%,420px); padding: 21px; background: #111113; border: 1px solid #3f3f46; border-radius: 14px; box-shadow: 0 24px 80px #0009 } .modalhead { display: flex; justify-content: space-between; gap: 10px } .modal h3 { margin: 0; font-size: 18px } .modal p { margin: 5px 0 12px; color: #71717a; font-size: 12px } .detail { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid #27272a; padding: 11px 0; font-size: 12px } .detail span { color: #71717a } code { text-align: right; overflow-wrap: anywhere } .actions { display: grid; gap: 8px; margin-top: 18px } .close { border: 0; background: transparent; font-size: 21px; padding: 0 5px; color: #a1a1aa }
-  @media(max-width:560px) { padding: 18px 14px 36px; .relaystatus { display:none } .intro { align-items:flex-start; flex-direction:column; padding-top:30px } .stats { gap:7px } .stat { padding:12px } .value { font-size:20px } .label { font-size:10px } .device { grid-template-columns:35px minmax(0,1fr) auto; gap:9px; padding:11px } .icon { width:34px; height:34px } .address { display:grid; gap:3px } .status { font-size:0 } footer { flex-direction:column } }
+  @media(max-width:720px) {
+    padding: 20px 16px 38px;
+    .intro { align-items:flex-start; flex-direction:column; padding:30px 0 20px }
+    .intro > div { max-width: 620px }
+    .stats { gap:8px; margin-bottom:18px }
+    .stat { padding:13px 14px }
+    .device { grid-template-columns:36px minmax(0,1fr) auto; gap:10px; padding:12px }
+    .icon { width:34px; height:34px }
+    .address { display:grid; gap:3px }
+  }
+  @media(max-width:480px) {
+    padding: 16px 12px 32px;
+    header { padding-bottom:16px }
+    .brand { gap:9px; min-width:0 }
+    .logo { width:36px; height:36px; border-radius:10px; font-size:21px; flex:0 0 auto }
+    h1 { font-size:15px }
+    .sub { font-size:11px }
+    .relaystatus { display:none }
+    .intro { gap:14px; padding-top:26px }
+    h2 { font-size:clamp(25px, 8vw, 34px); line-height:1.08 }
+    .desc { font-size:13px; line-height:1.5 }
+    .intro > button { width:100%; min-height:44px }
+    .stats { gap:6px; margin:2px 0 17px }
+    .stat { min-width:0; padding:10px 9px; border-radius:9px }
+    .value { font-size:20px }
+    .label { font-size:10px; line-height:1.25; overflow-wrap:anywhere }
+    .toolbar { gap:8px; margin-bottom:13px }
+    input { min-width:0; padding:10px }
+    .count { font-size:11px }
+    .title { gap:8px; font-size:11px }
+    .title small { text-align:right; font-size:10px }
+    .list { gap:7px }
+    .device { grid-template-columns:32px minmax(0,1fr) auto; gap:8px; padding:10px; border-radius:9px }
+    .icon { width:30px; height:30px; font-size:16px; border-radius:8px }
+    .name { min-width:0; gap:5px; font-size:13px; overflow-wrap:anywhere }
+    .address { min-width:0; font-size:10px; overflow-wrap:anywhere }
+    .status { font-size:0 }
+    .status .led { width:7px; height:7px; margin:0 2px 0 0 }
+    .empty, .notice { padding:18px 14px; font-size:12px }
+    .panel { padding:12px; margin-top:14px }
+    .panelhead { gap:8px; font-size:13px }
+    .panelhead button { padding:8px 10px }
+    .hint { font-size:10px }
+    .edit { gap:6px; flex-wrap:wrap }
+    .edit input { flex:1 1 170px; width:auto }
+    .edit button { flex:0 0 auto }
+    footer { flex-direction:column; gap:8px; margin-top:20px }
+    footer button { align-self:flex-start; min-height:32px }
+    .shade { padding:10px }
+    .modal { max-height:calc(100dvh - 20px); overflow-y:auto; padding:17px; border-radius:12px }
+    .modal h3 { font-size:17px; overflow-wrap:anywhere }
+    .detail { gap:8px; font-size:11px }
+  }
+  @media(max-width:360px) {
+    padding: 12px 10px 28px;
+    .stats { gap:5px }
+    .stat { padding:9px 7px }
+    .value { font-size:18px }
+    .label { font-size:9px }
+    .count { max-width:58px; white-space:normal; text-align:right; line-height:1.2 }
+    .device { grid-template-columns:29px minmax(0,1fr) 10px; gap:7px; padding:9px }
+    .icon { width:28px; height:28px; font-size:15px }
+    .status .led { width:7px; height:7px }
+    .title small { max-width:65%; overflow-wrap:anywhere }
+    .modal { padding:14px }
+    .detail { align-items:flex-start }
+    .detail span { flex:0 0 76px }
+  }
+  @media(max-height:600px) and (max-width:720px) {
+    .shade { align-items:start; overflow-y:auto }
+    .modal { margin:auto 0 }
+  }
 `
 const base = localStorage.getItem('network-waker-relay') || 'http://localhost:8787'
 const label = (d: Device) => d.name || d.vendor || 'Unknown device'

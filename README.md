@@ -2,6 +2,11 @@
 
 A responsive React app that discovers devices through a local network relay and sends Wake-on-LAN packets. The browser and Android WebView cannot read ARP neighbors or send UDP broadcasts themselves, so the relay must run on a computer or always-on device connected to the same LAN.
 
+## Links
+
+- [Abrir o aplicativo](https://ygskwan.vercel.app)
+- [Baixar o APK](dist/app.apk) — arquivo gerado com `bun run build`.
+
 ## Requirements
 
 - Bun
@@ -46,6 +51,8 @@ bun run build
 ```
 
 Nitron writes the APK to `dist/app.apk`. Copy it to the Android device and install it, allowing installs from the file manager when prompted. The APK contains the web UI only; it does not run the Node/Bun relay.
+
+O arquivo também está disponível para download neste repositório em [`dist/app.apk`](dist/app.apk) após o build.
 
 On Android, open **Configure** in the app and enter the relay host's LAN address, for example `http://192.168.1.20:8787`. Both devices must be connected to the same network. Allow inbound TCP port 8787 on the relay host's firewall. The relay sends a 102-byte WoL packet to UDP port 9 by default.
 
